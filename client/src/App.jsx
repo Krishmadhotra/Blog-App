@@ -7,7 +7,7 @@ import Dashboard from "./pages/Dashboard"
 import Projects from "./pages/Projects"
 import SignIn from "./pages/SignIn"
 import Header from './Components/Header'
-
+import Footer from "./Components/Footer"
 
 const App = () => {
   return (
@@ -20,9 +20,8 @@ const App = () => {
         <Route path="/projects" element={<Projects />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
-
- 
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 }
