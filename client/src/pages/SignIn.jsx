@@ -2,11 +2,14 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import React from 'react';
 import { useState } from 'react';
 import { Link,useNavigate } from "react-router-dom"
+import {useDispatch,useSelector} from 'react-redux'
+import {signInStart,signInSuccess,signInFailure} from "../redux/user/userSlice"
 const SignIn=()=>{
 
-    const [formData,setFormData]=useState({})
-    const [errorMessage,setErrorMessages]=useState(null);
-    const [loading,setLoading]=useState(false)
+    const [formData,setFormData]=useState({});
+    const {loading, error: errorMessage} = useSelector((state) => state.user);
+
+    const dispatch=useDispatch();
     const navigate=useNavigate()
 
 
@@ -17,30 +20,28 @@ const SignIn=()=>{
     const handleSubmit=async(e)=>{
         e.preventDefault();
         if(!formData.email || !formData.password){
-            return setErrorMessages("All flieds are required")
+            return dispatch(signInFailure("Please fill out all the fields"))
         }
         try{
-            setLoading(true)
-            setErrorMessages(null)
+            dispatch(signInStart())
             const response=await fetch("/api/auth/signin",{
                 method:'POST',
-                headers:{'Content-type':"application/json"},
+                headers:{ 'Content-Type':"application/json"},
                 body:JSON.stringify(formData)
             });
 
             const data=await response.json()
             if (data.success === false){
-                setLoading(false)
-                return setErrorMessages("username or email already exists")
+              dispatch(signInFailure("Please check your username or password",data.message))
             }
             if(response.ok){
-                navigate('/')
+                dispatch(signInSuccess(data));
+                navigate("/")
             }
        
         }
         catch(error){
-            setErrorMessages(error.message)
-            setLoading(false)
+          dispatch(signInFailure(error.message))
 
         }
     }
@@ -88,7 +89,7 @@ const SignIn=()=>{
                     </form> 
                     <div className="flex gap-2 text-sm mt-5">
                         <span>Don't have an Account?</span>
-                        <Link to="/sign-up" className="text-blue-500">Sign Up</Link>
+                        <Link to="/signup" className="text-blue-500">Sign Up</Link>
                     </div>
                     {
                         errorMessage && (

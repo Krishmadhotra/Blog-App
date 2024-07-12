@@ -24,7 +24,7 @@ const SignUp=()=>{
             setErrorMessages(null)
             const response=await fetch("/api/auth/signup",{
                 method:'POST',
-                headers:{'Content-type':"application/json"},
+                headers:{'Content-Type':"application/json"},
                 body:JSON.stringify(formData)
             });
 
@@ -34,7 +34,7 @@ const SignUp=()=>{
                 return setErrorMessages("username or email already exists")
             }
             if(response.ok){
-                navigate("/sign-in")
+                navigate("/signin")
             }
        
         }
@@ -97,7 +97,7 @@ const SignUp=()=>{
                     </form> 
                     <div className="flex gap-2 text-sm mt-5">
                         <span>Have an Account?</span>
-                        <Link to="/sign-in" className="text-blue-500">Sign In</Link>
+                        <Link to="/signin" className="text-blue-500">Sign In</Link>
                     </div>
                     {
                         errorMessage && (
