@@ -18,10 +18,8 @@ mongoose.connect(process.env.MONGO)
 app.listen(3000,()=>{
     console.log("app is running on port 300 !")
 })
-
 app.use("/api/user",userRoutes);
 app.use("/api/auth",authRoutes)
-
 app.use((err,req,res,next)=>{
     const statuscode=err.statuscode || 500;
     const errMessage=err.message ||'Internal Server Error';
