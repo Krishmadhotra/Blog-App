@@ -16,8 +16,8 @@ import {
   updateFailure,
   deleteUserStart,
   deleteUserSuccess,
-  deleteUserFailure
-//   signoutSuccess,
+  deleteUserFailure,
+  signoutSuccess,
 } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
@@ -158,7 +158,7 @@ export default function DashProfile() {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        dispatch(data);
+        dispatch(signoutSuccess());
       }
     } catch (error) {
       console.log(error.message);
