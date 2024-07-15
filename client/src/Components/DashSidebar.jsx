@@ -33,4 +33,4 @@ const DashSidebar = () => {
   )
 }
 
-export default DashSidebar
+export default DashSidebar;

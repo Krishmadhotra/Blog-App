@@ -5,20 +5,24 @@ import userRoutes from './routes/user.route.js';
 import authRoutes from "./routes/auth.route.js"
 import cookieParser from 'cookie-parser';
 
-const app=express();
 dotenv.config();
-app.use(express.json())
-app.use(cookieParser)
+
 mongoose.connect(process.env.MONGO)
-.then(()=>{
-    console.log("MongoDB is connected")
-})
-.catch(err=>{
-    console.log(err)
-})
+  .then(() => {
+    console.log('MongoDB is connected');
+  })
+  .catch(err => {
+    console.error('Connection error', err);
+  });
+
+const app=express();
+
+app.use(express.json())
+
+app.use(cookieParser())
 
 app.listen(3000,()=>{
-    console.log("app is running on port 300 !")
+    console.log("app is running on port 100 !")
 })
 app.use("/api/user",userRoutes);
 app.use("/api/auth",authRoutes)
