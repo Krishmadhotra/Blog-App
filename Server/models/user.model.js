@@ -20,6 +20,10 @@ const userSchema= new mongoose.Schema({
         default:"https://w0.peakpx.com/wallpaper/979/89/HD-wallpaper-purple-smile-design-eye-smily-profile-pic-face-thumbnail.jpg"
 
     },
+    isAdmin:{
+        type:Boolean,
+        default:false
+    },
 }, {timestamps:true}
 );
 
