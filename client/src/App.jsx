@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn"
 import Header from './Components/Header'
 import Footer from "./Components/Footer"
 import PrivateRoute from './Components/PrivateRoute'
+import updatePost from './pages/updatePost'
 import CreatePost from './pages/createPost'
 import AdminPrivateRoute from './Components/adminPrivateRoute'
 
@@ -24,8 +25,11 @@ const App = () => {
         </Route>
 
         <Route element={<AdminPrivateRoute />}>
+        <>
           <Route path="/create-post" element={<CreatePost />} />
-        </Route>
+          <Route path="/update-post/:postId" element={<updatePost />} />
+        </>
+        </Route>m
 
         <Route path="/projects" element={<Projects />} />
         <Route path="/signin" element={<SignIn />} />

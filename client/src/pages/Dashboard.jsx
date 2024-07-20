@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 import DashSidebar from '../Components/DashSidebar';
 import DashProfile from '../Components/DashProfile';
+import DashPost from '../Components/DashPost';
+import DashUsers from "../Components/DashUsers"
 
 const Dashboard=()=>{
     const location=useLocation()
@@ -18,7 +20,11 @@ const Dashboard=()=>{
         <div className="min-h-screen flex flex-col md:flex-row">
             <div className="md:w-56" >          <DashSidebar />
             </div>
-            {tab==='profile' && <DashProfile /> }
+            {tab==='profile' && <DashProfile /> }\
+
+            {tab==='posts' && <DashPost />}
+
+            {tab==='users' && <DashUsers />}
         </div>
     )
 
