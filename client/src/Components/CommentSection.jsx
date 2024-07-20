@@ -1,10 +1,44 @@
 import { Alert, Button, Textarea, TextInput } from 'flowbite-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-const Comments = (postId) => {
+import {Link,useNavigate} from 'react-router-dom'
+const CommentSection = (postId) => {
     const {currentUser}=useSelector((state)=>state.user)
     const [comment,setComment]=useState(" ")
+    const [comments,setComments]=useState([])
+    const [commentError,setCommentError]=useState(null)
+    const navigate=useNavigate();
 
+    useEffect(()=>{
+        const fetchComments=async()=>{
+            try{
+                const response =await fetch(`/api/comment/getPostComments/${postId}`);
+                if(response.ok){
+                const data=await response.json();
+                setComments(data);
+                navigate("/signin")
+                }
+                const res=await fetch(`/api/comment/likeComment/${commentId}`,{
+                    method:"PUT",
+
+                })
+                if(res.ok){
+                const data=await res.json();
+                setComments(comments.map((comment)=>
+                    comment._id === commentId ? {
+                        ...comment,
+                        likes:data.likes,
+                        numberOfLikes:data.numberOfLikes,
+                    }:comment))
+                }
+
+            }catch(error){
+                console.log(error);
+            }
+
+        }
+        fetchComments()
+    },[postId])
     const handleSubmit=async(e)=>{
         e.preventdefault();
         if(comment.length>200){
@@ -21,12 +55,28 @@ const Comments = (postId) => {
         const data=await response.json();
         if(response.ok){
             setComment(' ')
+            setCommentError(null);
+            setComments([data,...comments])
         }
     }catch(error){
         console.log(error);
     }
+    }
+    const handleLike=async(commentId)=>{
+        try{
+            if(!currentUser){
+                return;
+            }
+
+        }
 
 
+    }
+
+    const handleEdit=async(req,res)=>{
+       setComments(
+        comments.map((c)=>c._id===comment._id?{...c,content:editedContent}: c)
+       ) 
     }
       return (
         <div className='max-w-2xl mx-auto w-full p-3'>
@@ -69,9 +119,32 @@ const Comments = (postId) => {
                 </form>
               
             )}
+            {comments.length===0 ? (
+                <p className="text-sm my-5">No Comments yet! </p>
+            ):(
+                <>
+                   <div className="text-sm my-5 flex items-center gap-1">
+                    <p>Comments</p>
+                    <div className='border border-gray-400 py-1 px-2 rounded-sm'>
+                        <p>{comments.length}</p>
+                    </div>
+
+                </div>
+
+               {
+                comments.map((comment)=>{
+                    <Comment key={comment._id}
+                    comment={comment} onLike={handleLike}
+                    onEdit={handleEdit}/>
+                })
+               }
+
+                </>
+             
+            )}
         </div>
    
   )
 }
 
-export default Comments
+export default CommentSection 
