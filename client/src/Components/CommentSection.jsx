@@ -1,5 +1,5 @@
 import { Alert, Button, Textarea, TextInput } from 'flowbite-react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {Link,useNavigate} from 'react-router-dom'
 const CommentSection = (postId) => {
@@ -8,6 +8,8 @@ const CommentSection = (postId) => {
     const [comments,setComments]=useState([])
     const [commentError,setCommentError]=useState(null)
     const navigate=useNavigate();
+    const [showModal,setShowModal]=useState(false)
+    const [commentToDelete,setCommentToDelete]=useState(null)
 
     useEffect(()=>{
         const fetchComments=async()=>{
@@ -73,10 +75,32 @@ const CommentSection = (postId) => {
 
     }
 
-    const handleEdit=async(req,res)=>{
+    const handleEdit=async()=>{
        setComments(
         comments.map((c)=>c._id===comment._id?{...c,content:editedContent}: c)
        ) 
+       
+    const handleDelete=async(req)=>{
+        try{
+            if(!currentUser){
+                 navigate("/signin")
+                 return;
+            }
+
+            const res=await fetch(`/api/comment/deleteComment/${commentId}`.{
+                method:"Delete"
+            })
+            if(res.ok){
+                const data=await res.json();
+                setComments(comments.filter((comment)=>comment._id!==commentId))
+            }
+
+            }
+            const d
+        }
+
+    }
+
     }
       return (
         <div className='max-w-2xl mx-auto w-full p-3'>
@@ -134,8 +158,14 @@ const CommentSection = (postId) => {
                {
                 comments.map((comment)=>{
                     <Comment key={comment._id}
-                    comment={comment} onLike={handleLike}
-                    onEdit={handleEdit}/>
+                    comment={comment} 
+                    onLike={handleLike}
+                    onEdit={handleEdit}
+                    onDelete={(commentId)=>{
+                        setShowModal(true)
+                        setCommentToDelete(commentId)
+                    }}
+                    />
                 })
                }
 
