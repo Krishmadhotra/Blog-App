@@ -8,6 +8,7 @@ const Comment = ({comment,onLike,onEdit}) => {
     const [user,setUser]=useState({});
     const currentUser=useSelector((state)=>state.user)
     const [isEditing,setIsEditing]=useState(false)
+    const [showModal,setShowModal]=useState(false)
     const [editedContent,setEditedContent]=useState(comment.content)
     useEffect(()=>{
         const getUser=async()=>{
@@ -23,7 +24,7 @@ const Comment = ({comment,onLike,onEdit}) => {
 
             }
         }
-
+        getUser()
     },[comment])
 
     const handleEdit=()=>{
@@ -45,12 +46,9 @@ const Comment = ({comment,onLike,onEdit}) => {
             })
             if(response.ok){
                 setIsEditing(false);
-                onEdit(comment._id,editedContent)
+                onEdit(comment._id,editedContent )
             }
-
-
         }catch(error){
-
 
         }
     }
@@ -72,10 +70,10 @@ const Comment = ({comment,onLike,onEdit}) => {
                 <>
                 <Textarea className="mb-2 "
                 value={editedContent}               onChange={(e)=setEditedContent(e.target.value)} />
-                       <div className='flex justify-end gap-2 text-xs'>/
+                       <div className='flex justify-end gap-2 text-xs'>
                         <Button type="button" size="sm"
                         gradientDuoTone="purpleToPink"
-                        onClicl={handleSave}>
+                        onClick={handleSave}>
                             Save
                         </Button>
                         <Button type="button" size="sm"
@@ -100,8 +98,13 @@ const Comment = ({comment,onLike,onEdit}) => {
                     >0 &&  comment.numberOfLikes + " " + (comment.numberOfLikes===1 ? "like" :"likes")}</p>
                     {
                         currentUser && (currentUser._id===comment.userId || currentUser.isAdmin)  && (
+                            <>
                            <button type="button " 
-                           onClick={handleEdit}className="text-gray-400 hover:text-blue-500"></button>
+                           onClick={handleEdit}className="text-gray-400 hover:text-blue-500">Edit</button>
+                           <button type="button " 
+                           onClick={handleEdit}
+                           onDelete={handleDelete}className="text-gray-400 hover:text-blue-500">Delete</button>
+                           </>
                         )
                     }
             </div>
