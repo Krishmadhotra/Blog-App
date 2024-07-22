@@ -1,4 +1,4 @@
-import Users from '../models/user.model.js';
+import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
@@ -19,7 +19,7 @@ export const signup = async (req, res, next) => {
 
   const hashedPassword = bcryptjs.hashSync(password, 10);
 
-  const newUser = new Users({
+  const newUser = new User({
     username,
     email,
     password: hashedPassword,
@@ -41,7 +41,7 @@ export const signin = async (req, res, next) => {
   }
 
   try {
-    const validUser = await Users.findOne({ email });
+    const validUser = await User.findOne({ email });
     if (!validUser) {
       return next(errorHandler(404, 'User not found'));
     }
@@ -70,7 +70,7 @@ export const signin = async (req, res, next) => {
 export const google = async (req, res, next) => {
   const { email, name, googlePhotoUrl } = req.body;
   try {
-    const user = await Users.findOne({ email });
+    const user = await User.findOne({ email });
     if (user) {
       const token = jwt.sign(
         { id: user._id, isAdmin: user.isAdmin },
@@ -88,7 +88,7 @@ export const google = async (req, res, next) => {
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
-      const newUser = new Users({
+      const newUser = new User({
         username:
           name.toLowerCase().split(' ').join('') +
           Math.random().toString(9).slice(-4),

@@ -7,7 +7,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('/api/post/getPosts');
+      const res = await fetch('/Server/post/getPosts');
       const data = await res.json();
       setPosts(data.posts);
     };
@@ -21,7 +21,7 @@ export default function Home() {
           Here you'll find a variety of articles and tutorials on topics such as
           web development, software engineering, and programming languages.
         </p>
-        <Link
+        <Link to={'/search'}
           className='text-xs sm:text-sm text-teal-500 font-bold hover:underline'
         >
           View all posts
