@@ -9,39 +9,35 @@ import SignIn from "./pages/SignIn"
 import Header from './Components/Header'
 import Footer from "./Components/Footer"
 import PrivateRoute from './Components/PrivateRoute'
-import updatePost from './pages/updatePost'
+import UpdatePost from './pages/updatePost'
 import CreatePost from './pages/createPost'
 import AdminPrivateRoute from './Components/adminPrivateRoute'
 import PostPage from './pages/PostPage'
 import ScrollToTop from "./Components/ScrollToTop"
-
-const App = () => {
+import Search from './pages/Search';
+export default function App() {
   return (
     <BrowserRouter>
-    <ScrollToTop />
-    <Header />
+      <ScrollToTop />
+      <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element= {<About />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/sign-in' element={<SignIn />} />
+        <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/search' element={<Search />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path='/dashboard' element={<Dashboard />} />
         </Route>
-
         <Route element={<AdminPrivateRoute />}>
-        <>
-          <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/update-post/:postId" element={<updatePost />} />
-        </>
+          <Route path='/create-post' element={<CreatePost />} />
+          <Route path='/update-post/:postId' element={<UpdatePost />} />
         </Route>
 
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/post/:postSlug" element={<PostPage />} />
+        <Route path='/projects' element={<Projects />} />
+        <Route path='/post/:postSlug' element={<PostPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
-  )
+  );
 }
-
-export default App

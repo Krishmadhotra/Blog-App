@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import CallToAction from '../components/CallToAction';
+import CallToAction from '../Components/CallToAction';
 import { useEffect, useState } from 'react';
-import ScrollToTop from '../components/ScrollToTop';
-
+import PostCard from '../Components/PostCard';
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
@@ -23,7 +22,6 @@ export default function Home() {
           web development, software engineering, and programming languages.
         </p>
         <Link
-          to='/search'
           className='text-xs sm:text-sm text-teal-500 font-bold hover:underline'
         >
           View all posts
